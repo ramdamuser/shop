@@ -9,7 +9,7 @@ import os, stripe
 app = Flask(__name__)
 Bootstrap(app)
 
-app.config['SECRET_KEY'] = 'qwerty123'
+app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -153,6 +153,7 @@ def add_to_cart(product_id):
     return redirect(url_for("login"))
 
 @app.route("/create_checkout_session")
+@login_required
 def create_checkout_session():
     cart_items = current_user.cart_items
     stripe_prices = stripe.Price.list()["data"]
@@ -179,6 +180,7 @@ def create_checkout_session():
     return redirect(checkout_session.url, code=303)
 
 @app.route("/success")
+@login_required
 def success():
     for cart_item in current_user.cart_items:
         db.session.delete(cart_item)
@@ -186,5 +188,6 @@ def success():
     return render_template("success.html")
 
 @app.route("/cancel")
+@login_required
 def cancel():
     return render_template("cancel.html")

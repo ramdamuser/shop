@@ -10,7 +10,7 @@ app = Flask(__name__)
 Bootstrap(app)
 
 app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", "sqlite:///database.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 login_manager = LoginManager()
@@ -191,3 +191,6 @@ def success():
 @login_required
 def cancel():
     return render_template("cancel.html")
+
+if __name__ == "__main__":
+    app.run(debug=False)

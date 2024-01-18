@@ -9,7 +9,7 @@ import os, stripe
 app = Flask(__name__)
 Bootstrap(app)
 
-app.config['SECRET_KEY'] = 'qwerty'
+app.config['SECRET_KEY'] = 'qwerty1'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -43,6 +43,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
     name = db.Column(db.String(100), unique=True)
     cost = db.Column(db.Integer)
+    img_url = db.Column(db.Text(30000))
     cart_items = db.relationship('CartItem', backref='product', lazy=True)
 
 class CartItem(db.Model):
@@ -51,7 +52,7 @@ class CartItem(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity = db.Column(db.Integer, default=1)
-
+    img_url = db.Column(db.Text(30000))
 
 def admin_only(f):
     @wraps(f)
@@ -114,7 +115,7 @@ def logout():
 def add_product():
     form = ProductForm()
     if form.validate_on_submit():
-        new_product = Product(name=form.name.data, cost=form.cost.data)
+        new_product = Product(name=form.name.data, cost=form.cost.data, img_url=form.img_url.data)
         db.session.add(new_product)
         db.session.commit()
         stripe_product = stripe.Product.create(name=form.name.data)
@@ -138,7 +139,7 @@ def add_to_cart(product_id):
                 cart_item.quantity += 1
             else:
                 # If the item is not in the cart, create a new cart item
-                cart_item = CartItem(user=current_user, product=product_to_add)
+                cart_item = CartItem(user=current_user, product=product_to_add, img_url=product_to_add.img_url)
 
             db.session.add(cart_item)
             db.session.commit()

@@ -41,9 +41,9 @@
                         <ul class="dropdown-menu" style="text-align: center;">
                             {% if current_user.cart_items %}
                             {% for cart_item in current_user.cart_items %}
-                            <li><a class="dropdown-item" href="#">{{ cart_item.product.name }} ({{ cart_item.quantity }})</a></li>
+                            <li><a class="dropdown-item" href="#">{{ cart_item.product.name }}({{ cart_item.quantity }})<img src="{{ cart_item.img_url }}" alt="Product Image" class="cart-item-image"> ${{ cart_item.product.cost * cart_item.quantity }}.00</a></li>
                             {% endfor %}
-                            <form action="create_checkout_session" method="po">
+                            <form action="create_checkout_session">
                                 <button class="btn btn-primary" type="submit">Checkout</button>
                             </form>
                             {% else %}

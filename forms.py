@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, EmailField, PasswordField, SubmitField, IntegerField, URLField
 from wtforms.validators import DataRequired
 
 class RegisterForm(FlaskForm):
@@ -17,4 +17,5 @@ class LoginForm(FlaskForm):
 class ProductForm(FlaskForm):
     name = StringField("Product name", validators=[DataRequired()])
     cost = IntegerField("Product cost(in AUD)", validators=[DataRequired()])
+    img_url = URLField("Image URL", validators=[DataRequired()])
     submit = SubmitField("Add Product", validators=[DataRequired()])

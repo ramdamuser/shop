@@ -9,7 +9,7 @@ import os, stripe
 app = Flask(__name__)
 Bootstrap(app)
 
-app.config['SECRET_KEY'] = 'qwerty12'
+app.config['SECRET_KEY'] = 'qwerty123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

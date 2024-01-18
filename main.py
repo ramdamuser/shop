@@ -52,7 +52,7 @@ class CartItem(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity = db.Column(db.Integer, default=1)
-    img_url = db.Column(db.Text(30000))
+    img_url = db.Column(db.Text)
 
 def admin_only(f):
     @wraps(f)
@@ -65,7 +65,7 @@ def admin_only(f):
 with app.app_context():
     db.create_all()
 
-stripe.api_key = "sk_test_51OYdTuDjhT2uQWOrajbub0652t7C2vyMUO8rfwxfEaFwxpfAsJWUH23mx0OBtO1r0YTwSK1X1rCGkfE6VlsIPFIS00G9dg58Ox"
+stripe.api_key = os.environ.get('STRIPE_KEY')
 
 @app.route("/products")
 def products():
